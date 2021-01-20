@@ -2,12 +2,8 @@ from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 for x in range(0, 256):
     challenge_del_cliente = bytearray(8) 
-# el atacante ponen 8 bytes a 0 como challenge
     iv = bytearray(16) 
-# la implementación de netlogon es vulnerable al poner IV como 16 bytes a 0 en lugar de ser aleatorio
     sesion_key = get_random_bytes(16) 
-# esto se saca del password y del challenge, como no tenemos password pues lo generamos aleatoriamente.
     cipher = AES.new(sesion_key, AES.MODE_CFB, iv, segment_size=8) 
-# especificamos que se use el IV de 16 bytes en 0, en lugar del que se crea por defecto, y que se use CFB8 para q no use el CFB128 por defecto
     ct_bytes = cipher.encrypt(challenge_del_cliente)
     print(ct_bytes)
